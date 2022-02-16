@@ -18,6 +18,7 @@ const main = async () => {
 
   const schema = await buildSchema({
     resolvers: [RegisterResolver, LoginResolver, MeResolver],
+    authChecker: ({ context: { req } }) => !!req.session.userId,
   });
 
   const apolloServer = new ApolloServer({
@@ -27,7 +28,7 @@ const main = async () => {
 
   const app = Express();
 
-  app.use(cors());
+  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
   const RedisStore = connectRedis(session);
 
