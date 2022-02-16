@@ -20,7 +20,7 @@ export class LoginResolver {
 
     const valid = await bcrypt.compare(password, user.password);
 
-    if (!valid) {
+    if (!valid || !user.confirmed) {
       return null;
     }
 
