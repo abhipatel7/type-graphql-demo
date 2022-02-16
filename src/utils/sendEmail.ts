@@ -3,9 +3,13 @@ import nodemailer from 'nodemailer';
 export async function sendEmail({
   email,
   url,
+  subject,
+  text,
 }: {
   email: string;
   url: string;
+  subject: string;
+  text: string;
 }) {
   const testAccount = await nodemailer.createTestAccount();
 
@@ -22,8 +26,8 @@ export async function sendEmail({
   const info = await transporter.sendMail({
     from: '"Abhishek Patel" <info@abhishek.patel>',
     to: email,
-    subject: 'Verification Link',
-    text: 'Click on the link below to verify your account with us.', // plain text body
+    subject,
+    text,
     html: `<a href="${url}">${url}</a>`,
   });
 
