@@ -5,7 +5,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "root",
-  "database": "typegraphql",
+  "database": "type-graphql",
   "synchronize": true,
   "logging": true,
   "entities": ["src/entity/**/*.ts"],
