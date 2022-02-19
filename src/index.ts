@@ -6,9 +6,11 @@ import { createConnection } from 'typeorm';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 import { redis } from './redis';
 import { createSchema } from './utils/createSchema';
+import { rule } from './utils/validationRule';
 
 const main = async () => {
   await createConnection();
@@ -18,6 +20,7 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema,
     context: ({ req, res }) => ({ req, res }),
+    validationRules: [rule],
   });
 
   const app = Express();
@@ -44,6 +47,8 @@ const main = async () => {
   app.use(session(sessionOption));
 
   await apolloServer.start();
+
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 
   apolloServer.applyMiddleware({ app });
 
